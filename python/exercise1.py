@@ -19,3 +19,23 @@
 #     random_input = '['+'"'+', '.join(a)+'"'+', '+'"'+', '.join(b)+'"'+']'
 #
 ####################################################################################################################
+import random
+
+
+def intercept(inp):
+    inp = inp.split('\"')
+    arr_1 = set([int(x.strip()) for x in inp[1].split(",")])
+    arr_2 = set([int(x.strip()) for x in inp[3].split(",")])
+    return list(arr_1.intersection(arr_2))
+
+
+if __name__ == "__main__":
+    a = [str(random.randint(0, 100)) for i in range(0, random.randint(5, 15))]
+    b = [str(random.randint(0, 100)) for i in range(0, random.randint(5, 15))]
+    random_input = '[' + '"' + ', '.join(a) + '"' + ', ' + '"' + ', '.join(b) + '"' + ']'
+    arr = intercept(random_input)
+    print(a)
+    print(b)
+    print(arr)
+    # print(intercept("[\"11, 9, 38, 16, 75, 2, 8, 23\",  \"9, 83, 52, 8, 24, 11, 103\"]"))
+    # print(intercept("[\"5, 78, 23, 4, 9, 0, 36, 1\", \"77, 33, 26, 0, 5, 19, 44\"]"))
