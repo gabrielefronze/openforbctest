@@ -57,6 +57,12 @@ void print_vector(vector<pairIntString> &m)
     cout << "]" << endl;
 }
 
+/**
+ * Solution for the normal part
+ * @param m - vector containing Cache elements
+ * @param keys - the possible elements in the cache
+ * @param idx - cache keys
+ */
 void normalMapCache(vector<pairIntString> &m, string keys[], int idx)
 {
     bool flag = false;
@@ -80,11 +86,43 @@ void normalMapCache(vector<pairIntString> &m, string keys[], int idx)
     }
 }
 
+/**
+ * Solution for Bonus 1
+ * @tparam T - type of the generic data type
+ * @param m - vector containing Cache elements
+ * @param keys - the possible elements in the cache
+ * @param idx - cache keys
+ */
+template <typename T>
+void genericMapCache(vector<pair<int, T>> &m, T keys[], int idx)
+{
+    bool flag = false;
+    for (auto iter = m.begin(); iter != m.end(); ++iter)
+    {
+        if ((*iter).first == idx)
+        {
+            auto x = *iter;
+            m.erase(iter);
+            m.insert(m.begin(), x);
+            flag = true;
+            cout << "== Cache Hit ==" << endl;
+            break;
+        }
+    }
+    if (!flag)
+    {
+        m.pop_back();
+        m.insert(m.begin(), pair<int, T>(idx, keys[idx - 1]));
+        cout << "== Cache Miss ==" << endl;
+    }
+}
+
 int main()
 {
     vector<pairIntString> m;
     srand((unsigned)time(nullptr));
     int idx;
+    // for generics case, replace the keys array below with any data type (templated with T)
     string keys[9] = {"A", "B", "C", "D", "E", "F", "G", "H", "I"};
     for (int i = 0; i < 5; i++)
     {
