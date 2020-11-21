@@ -20,3 +20,7 @@
 #  - 91+50*3/20 + (17^2)/7
 # 
 ####################################################################################################################
+# !/bin/bash
+# Run this script with bash ./exercise1.sh <filename>.txt where file is in the same directory as the script
+# file contains the expression to be evaluated in each line. An example file called calc.txt is also provided for testing
+while read in; do echo "$in" | bc -l; done < $1

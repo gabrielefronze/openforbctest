@@ -17,6 +17,7 @@
 # !/bin/bash
 # Run this script with bash ./exercise2.sh <filename>.txt/csv where file is in the same directory as the script
 # Side note: You might have to dos2unix this file to change line endings in case of unexpected errors, since I am coding on Windows (guilty!)
+# Side note 2: I have also provided test files with my submissions, namely numbers.txt and numbers.csv
 filename=$1
 echo "$filename"
 ext=${filename#*.}
