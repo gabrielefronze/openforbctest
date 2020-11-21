@@ -30,15 +30,18 @@ using namespace std;
 using namespace chrono;
 
 // Size of the two vectors - preferably power of 2
-int N = 2048;
+int N = 1048576;
 
 // Number of threads - preferably (power of 2) + 1 (or a factor of N + 1)
-int NUM_THREADS = 5;
+int NUM_THREADS = 3;
 
 // The two vectors to be added
 vector<int> v1(N);
 vector<int> v2(N);
 vector<int> res(N);
+
+// Turn this ON to print the vectors - for debugging/validation
+bool logging = false;
 
 //Helper variables
 int part = 0;
@@ -89,7 +92,7 @@ void* log_operation(void* arg) {
         }
     }
     auto t2 = high_resolution_clock::now();  // finishing timer
-    cout << "100% task completed in " <<  duration_cast<microseconds>( t2 - t1 ).count()<<"\xC2\xB5s\n";
+    cout << "100% task completed in " <<  duration_cast<microseconds>( t2 - t1 ).count()<<" \xC2\xB5s\n";
 }
 
 /**
@@ -109,13 +112,18 @@ void* parallel_add(void* arg) {
 
 int main() {
     // Generate the vectors
-    cout << "========= The first Vector ======" << endl;
     generate_vector(v1);
-    print_vector(v1);
+    if(logging) {
+        cout << "========= The first Vector ======" << endl;
+        print_vector(v1);
+    }
 
-    cout << "========= The second Vector ======" << endl;
+
     generate_vector(v2);
-    print_vector(v2);
+    if(logging) {
+        cout << "========= The second Vector ======" << endl;
+        print_vector(v2);
+    }
 
     cout << "========= Logging ======" << endl;
 
@@ -130,9 +138,11 @@ int main() {
     for (int i = 0; i < NUM_THREADS; i++)
         pthread_join(threads[i], nullptr);
 
-    cout << "========= The sum Vector ======" << endl;
-    print_vector(res);
 
+    if(logging) {
+        cout << "========= The sum Vector ======" << endl;
+        print_vector(res);
+    }
     // Free up the memory
     v1.clear();
     v2.clear();

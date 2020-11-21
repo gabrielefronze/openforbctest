@@ -48,12 +48,24 @@ using namespace std;
 typedef pair<int, string> pairIntString;
 
 /**
+ * Abstracting cache to use any underlying data structure containing elements of a custom data type
+ * @tparam T - data type
+ */
+template <typename T>
+struct cache
+{
+    vector<int, T> vec_cache;
+    pair<int, T> arr_cache[5];
+};
+
+/**
  * Print the vector for debugging purposes
  * @param m - vector containing Cache elements
  */
-void print_vector(vector<pairIntString> &m) {
+void print_vector(vector<pairIntString> &m)
+{
     cout << "[ ";
-    for (const auto & iter : m)
+    for (const auto &iter : m)
     {
         cout << iter.first << " : " << iter.second << ", ";
     }
@@ -66,10 +78,13 @@ void print_vector(vector<pairIntString> &m) {
  * @param keys - the possible elements in the cache
  * @param idx - cache keys
  */
-void normalMapCache(vector<pairIntString> &m, string keys[], int idx) {
+void normalMapCache(vector<pairIntString> &m, string keys[], int idx)
+{
     bool flag = false;
-    for (auto iter = m.begin(); iter!=m.end(); ++iter) {
-        if((*iter).first == idx) {
+    for (auto iter = m.begin(); iter != m.end(); ++iter)
+    {
+        if ((*iter).first == idx)
+        {
             auto x = *iter;
             m.erase(iter);
             m.insert(m.begin(), x);
@@ -78,9 +93,10 @@ void normalMapCache(vector<pairIntString> &m, string keys[], int idx) {
             break;
         }
     }
-    if(!flag) {
+    if (!flag)
+    {
         m.pop_back();
-        m.insert(m.begin(), pairIntString(idx, keys[idx-1]));
+        m.insert(m.begin(), pairIntString(idx, keys[idx - 1]));
         cout << "== Cache Miss ==" << endl;
     }
 }
@@ -93,10 +109,13 @@ void normalMapCache(vector<pairIntString> &m, string keys[], int idx) {
  * @param idx - cache keys
  */
 template <typename T>
-void genericMapCache(vector< pair<int, T> > &m, T keys[], int idx) {
+void genericMapCache(vector<pair<int, T>> &m, T keys[], int idx)
+{
     bool flag = false;
-    for (auto iter = m.begin(); iter!=m.end(); ++iter) {
-        if((*iter).first == idx) {
+    for (auto iter = m.begin(); iter != m.end(); ++iter)
+    {
+        if ((*iter).first == idx)
+        {
             auto x = *iter;
             m.erase(iter);
             m.insert(m.begin(), x);
@@ -105,27 +124,31 @@ void genericMapCache(vector< pair<int, T> > &m, T keys[], int idx) {
             break;
         }
     }
-    if(!flag) {
+    if (!flag)
+    {
         m.pop_back();
-        m.insert(m.begin(), pair<int, T>(idx, keys[idx-1]));
+        m.insert(m.begin(), pair<int, T>(idx, keys[idx - 1]));
         cout << "== Cache Miss ==" << endl;
     }
 }
 
-int main () {
+int main()
+{
     vector<pairIntString> m;
-    srand((unsigned) time(nullptr));
+    srand((unsigned)time(nullptr));
     int idx;
     // for generics case, replace the keys array below with any data type (templated with T)
     string keys[9] = {"A", "B", "C", "D", "E", "F", "G", "H", "I"};
-    for(int i=0; i<5; i++) {
+    for (int i = 0; i < 5; i++)
+    {
         idx = (rand() % 9);
         // This will generate caches with duplicate keys, and was made for testing purposes only
-        m.emplace_back(idx+1, keys[idx]);
+        m.emplace_back(idx + 1, keys[idx]);
     }
     cout << "Original Cache: ";
     print_vector(m);
-    for(int i=0;i<10;i++) {
+    for (int i = 0; i < 10; i++)
+    {
         idx = (rand() % 9) + 1;
         cout << "Calling Cache with Key: " << idx << endl;
         normalMapCache(m, keys, idx);
@@ -136,7 +159,7 @@ int main () {
 
 /**
  * Sample Output :
- * 
+ *
     Original Cache: [ 3 : C, 2 : B, 3 : C, 6 : F, 6 : F, ]
     Calling Cache with Key: 2
     == Cache Hit ==
@@ -168,7 +191,7 @@ int main () {
     Calling Cache with Key: 2
     == Cache Hit ==
     Modified Cache: [ 2 : B, 8 : H, 9 : I, 3 : C, 3 : C, ]
-    
+
     Process finished with exit code 0
   *
  */
