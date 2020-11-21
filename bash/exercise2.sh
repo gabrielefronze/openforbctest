@@ -14,3 +14,17 @@
 #        averages as a single CSV line.
 # 
 ####################################################################################################################
+# !/bin/bash
+# Run this script with bash ./exercise2.sh <filename>.txt/csv where file is in the same directory as the script
+# Side note: You might have to dos2unix this file to change line endings in case of unexpected errors, since I am coding on Windows (guilty!)
+filename=$1
+echo "$filename"
+ext=${filename#*.}
+if [ "$ext" == "txt" ] 
+then
+    awk '{ total += $1; count++ } END { print total/count }' $1;
+else
+    awk -F ';' '{ for(i=1;i<=NF;i++) total[i]+=$i ; } END { for(i=1;i<=NF;i++) printf "%f ",total[i]/NR ;}' $1 > output.csv;
+fi
+# awk -F ';' '{print;x+=$2}END{print "MEAN" x/NR}' $1 > output.csv;
+# awk '{ total += $1; count++ } END { print total/count }' $1;
