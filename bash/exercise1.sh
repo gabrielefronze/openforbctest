@@ -23,4 +23,4 @@
 # !/bin/bash
 # Run this script with bash ./exercise1.sh <filename>.txt where file is in the same directory as the script
 # file contains the expression to be evaluated in each line. An example file called calc.txt is also provided for testing
-while read in; do echo "$in" | bc -l; done < $1
+while read in; do a=`echo "$in" | bc -l`; printf "%.4f\n" $a; done < $1
